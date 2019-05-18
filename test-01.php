@@ -1,6 +1,6 @@
 <?php
-
-$stringTest = "{{[gh])}}";
+//Проверка баланса скобок в строке
+$stringTest = "){{[gh]}}";
 
 $result = isCorrect($stringTest);
 
@@ -12,33 +12,22 @@ function isCorrect($str) {
     for($i = 0; $i < strlen($str); $i++){
         switch ($str[$i]) {
             case "(":
-                $stack .= "(";
-                break;
             case "[":
-                $stack .= "[";
-                break;
             case "{":
-                $stack .= "{";
+                $stack .= $str[$i];
                 break;
             case ")":
-                if ($stack[strlen($stack) - 1] == "(") {
+            case "]":
+            case "}":
+                if (
+                    $stack[strlen($stack) - 1] == "(" && $str[$i] == ")" ||
+                    $stack[strlen($stack) - 1] == "[" && $str[$i] == "]" ||
+                    $stack[strlen($stack) - 1] == "{" && $str[$i] == "}"
+                ){
                     $stack = substr($stack, 0, strlen($stack)-1);
-                }
-                else {
+                } else {
                     return false;
                 }
-                break;
-            case "]":
-                if ($stack[strlen($stack) - 1] == "[") {
-                    $stack = substr($stack, 0, strlen($stack)-1);
-                }
-                else return false;
-                break;
-            case "}":
-                if ($stack[strlen($stack) - 1] == "{") {
-                    $stack = substr($stack, 0, strlen($stack)-1);
-                }
-                else return false;
                 break;
         }
     }

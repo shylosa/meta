@@ -1,0 +1,5 @@
+SET sql_mode = '';
+/*Запрос выбирает неуникальные записи (с одинаковым id)
+ из заданной таблицы и помещает их в новую таблицу*/
+CREATE TABLE repeating_id SELECT * FROM workers
+WHERE id IN (SELECT id FROM workers GROUP BY id HAVING count(id)>1);
